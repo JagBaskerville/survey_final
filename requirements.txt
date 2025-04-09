@@ -1,0 +1,13 @@
+ipython==8.12.3
+ipywidgets==7.8.1
+lifelines==0.29.0
+matplotlib==3.8.4
+networkx==3.2.1
+numpy==1.26.4
+pandas==2.2.3
+py3Dmol==2.4.0
+py3Dmol==2.4.0
+Requests==2.32.3
+seaborn==0.13.2
+streamlit==1.39.0
+streamlit_elements==0.1.0
