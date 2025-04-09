@@ -18,7 +18,7 @@ SCOPE = ["https://www.googleapis.com/auth/spreadsheets",
          "https://www.googleapis.com/auth/drive"]
 
 # Create credentials from the secret dictionary
-credentials = service_account.Credentials.from_service_account_info(gcp_service_account)
+credentials = service_account.Credentials.from_service_account_info(gcp_service_account, scopes=SCOPE)  # Added scopes parameter
 
 # Authorize the gspread client with the credentials
 client = gspread.authorize(credentials)
