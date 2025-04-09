@@ -11,3 +11,7 @@ Requests==2.32.3
 seaborn==0.13.2
 streamlit==1.39.0
 streamlit_elements==0.1.0
+gspread==6.2.0
+google-auth==2.38.0
+google-auth-oauthlib==1.2.1
+google-auth-httplib2==0.1.0
