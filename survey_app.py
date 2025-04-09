@@ -6,7 +6,6 @@ from streamlit_elements import elements, mui, html, nivo
 import time
 import datetime
 import gspread
-import json
 from google.oauth2.service_account import Credentials
 
 # Set app title
@@ -42,9 +41,6 @@ july_31 = datetime.date(today.year, 7, 31)
 if 'num_dates' not in st.session_state:
     st.session_state.num_dates = 1
 
-# Initialize time options
-time_options = [f"{hour}:00" for hour in range(9, 18)]  # 9 AM to 5 PM
-
 # Function to increment date inputs
 def add_date():
     st.session_state.num_dates += 1
@@ -53,59 +49,38 @@ def add_date():
 availabilities = []
 for i in range(st.session_state.num_dates):
     date_label = "Select your availability for my thesis defense" if i == 0 else f"Additional availability #{i}"
-    
-    # Use columns to place date selector and time selectors side by side
-    cols = st.columns([2, 1, 1])
-    
-    with cols[0]:
-        selected_date = st.date_input(
-            date_label,
-            july_1,  # Default single date instead of range
-            july_1,
-            july_31,
-            format="MM.DD.YYYY",
-            key=f"date_input_{i}"
-        )
-    
-    # Time selection for start and end times
-    with cols[1]:
-        start_time = st.selectbox(
-            "Start Time",
-            time_options,
-            key=f"start_time_{i}"
-        )
-    
-    with cols[2]:
-        # Default end time is 1 hour after start time or last option if that would be out of range
-        default_end_idx = min(time_options.index(start_time) + 1, len(time_options) - 1) if f"start_time_{i}" in st.session_state else 0
-        end_time = st.selectbox(
-            "End Time",
-            time_options,
-            index=default_end_idx,
-            key=f"end_time_{i}"
-        )
-    
-    # Store the complete availability info
-    availabilities.append({
-        "date": selected_date,
-        "start_time": start_time,
-        "end_time": end_time
-    })
+    date_input = st.date_input(
+        date_label,
+        (july_1, july_1),  # Default
+        july_1,
+        july_31,
+        format="MM.DD.YYYY",
+        key=f"date_input_{i}"
+    )
+    availabilities.append(date_input)
 
 # Add button to add more date inputs
 st.button("+ Add another time availability", on_click=add_date)
     
 # Prepare list of availability ranges as strings
 availability_ranges = []
-for i, avail in enumerate(availabilities):
-    availability_string = f"{avail['date'].strftime('%Y-%m-%d')} from {avail['start_time']} to {avail['end_time']}"
-    st.write(f"Option {i+1}: {availability_string}")
-    availability_ranges.append(availability_string)
-
+for i, dates in enumerate(availabilities):
+    if isinstance(dates, tuple) and len(dates) == 2:
+        st.write(f"Option {i+1}: {dates[0]} to {dates[1]}")
+        availability_ranges.append(f"{dates[0]} to {dates[1]}")
 # Load credentials from Streamlit secrets
+gcp_service_account = st.secrets["gcp_service_account"]
+
+# Debug: print the keys available in secrets
+#st.write("Loaded keys from secrets:", list(st.secrets.keys()))
+#st.write("Type of secrets:", type(st.secrets))
+
 try:
     # Load credentials from Streamlit secrets
     gcp_service_account = st.secrets["gcp_service_account"]
+    
+    # Debug: check what type of data we received (without revealing sensitive info)
+    #st.write("Type of gcp_service_account:", type(gcp_service_account))
     
     # Define the scope
     SCOPE = ["https://www.googleapis.com/auth/spreadsheets",
@@ -138,6 +113,17 @@ except Exception as e:
         st.error(str(e))
     # Stop execution here to prevent further errors
     st.stop()
+    
+except Exception as e:
+    st.error(f"Error connecting to Google Sheets: {type(e).__name__}")
+    st.error("Please check your secrets configuration")
+    # For debugging locally; don't use in production
+    if not st.secrets.get("is_production", False):
+        st.error(str(e))
+    # Stop execution here to prevent further errors
+    st.stop()
+
+
 
 if st.button("Submit your availabilities"):
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
