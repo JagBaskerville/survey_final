@@ -13,6 +13,7 @@ gcp_service_account = st.secrets["gcp_service_account"]
 
 # Debug: print the keys available in secrets
 st.write("Loaded keys from secrets:", list(st.secrets.keys()))
+st.write("Type of secrets:", type(st.secrets))
 
 try:
     # Load credentials from Streamlit secrets
@@ -25,12 +26,12 @@ try:
     SCOPE = ["https://www.googleapis.com/auth/spreadsheets",
              "https://www.googleapis.com/auth/drive"]
     
-    # Create credentials from the secret dictionary
+    # Create credentials using Credentials class directly
     # If the secret is a string (JSON string), convert to dict first
     if isinstance(gcp_service_account, str):
         gcp_service_account = json.loads(gcp_service_account)
         
-    credentials = service_account.Credentials.from_service_account_info(
+    credentials = Credentials.from_service_account_info(
         gcp_service_account, 
         scopes=SCOPE
     )
@@ -43,6 +44,15 @@ try:
     sheet = spreadsheet.sheet1
     
     st.success("Successfully connected to Google Sheets!")
+    
+except Exception as e:
+    st.error(f"Error connecting to Google Sheets: {type(e).__name__}")
+    st.error("Please check your secrets configuration")
+    # For debugging locally; don't use in production
+    if not st.secrets.get("is_production", False):
+        st.error(str(e))
+    # Stop execution here to prevent further errors
+    st.stop()
     
 except Exception as e:
     st.error(f"Error connecting to Google Sheets: {type(e).__name__}")
