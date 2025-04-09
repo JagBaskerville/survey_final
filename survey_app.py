@@ -80,7 +80,7 @@ try:
     gcp_service_account = st.secrets["gcp_service_account"]
     
     # Debug: check what type of data we received (without revealing sensitive info)
-    st.write("Type of gcp_service_account:", type(gcp_service_account))
+    #st.write("Type of gcp_service_account:", type(gcp_service_account))
     
     # Define the scope
     SCOPE = ["https://www.googleapis.com/auth/spreadsheets",
