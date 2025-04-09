@@ -42,7 +42,7 @@ date_range = st.date_input(
 )
 
 # Step 2: Define time slot options
-time_options = ["Morning (08:00–12:00)", "Afternoon (13:00–17:00)", "Evening (18:00–21:00)"]
+time_options = ["Morning (09:00–12:00)", "Afternoon (14:00–17:00)"]
 
 availability_ranges = []
 
