@@ -100,7 +100,7 @@ try:
     client = gspread.authorize(credentials)
     
     # Open the Google Sheets file using its key
-    spreadsheet = client.open_by_key("1jgkEczK7FkZqGTes6cOYG_kJVCMa6EmiE89AUhnc4vA")
+    spreadsheet = client.open_by_key("1fa33nvsxwHp4Dc9FK9eGxono5gyemIpO3I36u8nl5kA")
     sheet = spreadsheet.sheet1
     
     st.success("Successfully connected to Google Sheets!")
