@@ -72,8 +72,8 @@ for i, dates in enumerate(availabilities):
 gcp_service_account = st.secrets["gcp_service_account"]
 
 # Debug: print the keys available in secrets
-st.write("Loaded keys from secrets:", list(st.secrets.keys()))
-st.write("Type of secrets:", type(st.secrets))
+#st.write("Loaded keys from secrets:", list(st.secrets.keys()))
+#st.write("Type of secrets:", type(st.secrets))
 
 try:
     # Load credentials from Streamlit secrets
