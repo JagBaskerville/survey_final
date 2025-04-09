@@ -9,14 +9,14 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 # Load credentials from Streamlit secrets
-creds_dict = st.secrets["gcp_service_account"]
+gcp_service_account = st.secrets["gcp_service_account"]
 
 # Define the scope
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets",
          "https://www.googleapis.com/auth/drive"]
 
 # Create credentials from the secret dictionary
-credentials = Credentials.from_service_account_info(creds_dict, scopes=SCOPE)
+credentials = service_account.Credentials.from_service_account_info(gcp_service_account)
 
 # Authorize the gspread client with the credentials
 client = gspread.authorize(credentials)
