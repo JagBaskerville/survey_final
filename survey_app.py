@@ -11,6 +11,8 @@ from google.oauth2.service_account import Credentials
 # Load credentials from Streamlit secrets
 gcp_service_account = st.secrets["gcp_service_account"]
 
+st.write("Loaded keys from secrets:", list(st.secrets.keys()))
+
 # Define the scope
 SCOPE = ["https://www.googleapis.com/auth/spreadsheets",
          "https://www.googleapis.com/auth/drive"]
