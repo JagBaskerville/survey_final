@@ -44,8 +44,9 @@ if 'num_date_ranges' not in st.session_state:
     
 # Define time blocks
 time_blocks = {
-    "Morning (9 AM - 12 PM)": "9 AM - 12 PM",
-    "Afternoon (2 PM - 5 PM)": "2 PM - 5 PM"
+    "Morning (10 AM - 12 PM)": "10 AM - 12 PM",
+    "Afternoon (2 PM - 4 PM)": "2 PM - 4 PM",
+    "Afternoon (4PM - 6PM)": "4 PM - 6 PM"
 }
 
 # Function to increment date ranges
